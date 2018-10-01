@@ -1,2 +1,9 @@
 <?php
-return "INSERT-YOUR-KEY-HERE";
+require __DIR__ . '/vendor/autoload.php';
+
+define('STEAM_CONSUMER_KEY', '94CAE43AF85A7BD4492929F4D32C4EA4');
+$steamId = "76561197961181720";
+
+$econ = new \SteamApi\EconItems(STEAM_CONSUMER_KEY, $steamId, 570);
+
+$items = $econ->getPlayerItems();
