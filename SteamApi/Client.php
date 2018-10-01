@@ -41,7 +41,7 @@ class Client {
 
 		if ($this->method){
 			$url .= $this->method . '/';
-		} 
+		}
 
 		if ($version) {
 			return $url . 'v'. $this->version . '/';

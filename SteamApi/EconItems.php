@@ -2,8 +2,9 @@
 namespace SteamApi;
 
 use SteamApi\Client;
-use SteamApi\Containers\App as AppContainer;
+use SteamApi\Containers\Item;
 use SteamApi\Interfaces\IEconItems;
+use SteamApi\Response\Status;
 
 class EconItems extends Client implements IEconItems {
 	protected $interface = 'IEconItems';
@@ -36,17 +37,31 @@ class EconItems extends Client implements IEconItems {
 		// Set up the api details
 		$this->method     = __FUNCTION__;
 		$this->version    = 1;
+
 		// Set up the arguments
 		$arguments = [
-			'steamId' => $this->getSteamId()
+			'steamid' => $this->getSteamId()
 		];
+
 		// Get the client
 		$client = $this->setUpClient($arguments);
-		print_r($client);
-		return $client;
+
+		$result = $client->result;
+
+		$items = [];
+
+		if ($result->status === \SteamApi\Response\Status::PERMISSIONS_DENIED) {
+			throw new \SteamApi\Exceptions\PermissionDeniedException();
+		} else if ($result->status === \SteamApi\Response\Status::OK) {
+			$items = $this->convertToObjects($result->items);
+		}
+
+		return $items;
 	}
 
 	public function GetSchema($language) {
+		$this->method     = __FUNCTION__;
+		$this->version    = 1;
 	}
 
 	public function GetSchemaURL() {
@@ -56,6 +71,12 @@ class EconItems extends Client implements IEconItems {
 	}
 
 	protected function convertToObjects($apps) {
-		return $apps;
+		$cleanedItems = array();
+
+		foreach ($items as $item) {
+			$cleanedItems[] = new Item($item);
+		}
+
+		return $cleanedItems;
 	}
 }
