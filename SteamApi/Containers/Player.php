@@ -29,13 +29,12 @@ class Player {
 
 	public $personaStateFlags;
 
-	public function __construct($player)
-	{
+	public function __construct($player) {
 		$this->steamId                  = $player->steamid;
 		$this->communityVisibilityState = $player->communityvisibilitystate;
-		$this->profileState             = $player->profilestate;
-		$this->personaName              = $player->personaname;
-		$this->lastLogoff               = date('F jS, Y h:ia', $player->lastlogoff);
+		$this->profileState             = isset($player->profilestate) ? $player->profilestate : null;
+		$this->personaName              = isset($player->personaname) ? $player->personaname : null;
+		$this->lastLogoff               = isset($player->lastlogoff) ? date('F jS, Y h:ia', $player->lastlogoff) : null;
 		$this->profileUrl               = $player->profileurl;
 		$this->avatar                   = $player->avatar;
 		$this->avatarMedium             = $player->avatarmedium;
