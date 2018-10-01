@@ -26,4 +26,8 @@ class Item {
 		$this->attributes  = isset($item->attributes) ? $item->attributes : null;
 		$this->equipped    = isset($item->equipped) ? $item->equipped : null;
 	}
+
+	public function hasBeenTraded() {
+		return $this->id !== $this->originalId;
+	}
 }
